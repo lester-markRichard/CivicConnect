@@ -38,7 +38,7 @@ router.post("/add", upload.single("image"), async (req, res) => {
       description,
       location,
       imageUrl: req.file ? `/uploads/${req.file.filename}` : "",
-      status: "pending", // 🟡 Default status for new reports
+      status: "Pending", // 🟡 Default status for new reports
     });
 
     await newReport.save();
