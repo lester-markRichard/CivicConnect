@@ -58,7 +58,7 @@ router.get("/", async (req, res) => {
 
     // ✅ Ensure every report has a status
     reports.forEach((r) => {
-      if (!r.status) r.status = "pending";
+      if (!r.status) r.status = "Pending";
     });
 
     res.render("reports", { reports });
