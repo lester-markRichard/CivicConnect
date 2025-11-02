@@ -12,6 +12,10 @@ app.use(express.json()); // for future JSON API routes
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+
 // ---------------------- DATABASE ----------------------
 mongoose
   .connect(process.env.MONGO_URI)
@@ -26,14 +30,9 @@ const reportRoutes = require("./routes/reportRoutes");
 app.use("/api/reports", reportRoutes);
 
 // ---------------------- PAGE ROUTES ----------------------
-app.get("/", (req, res) => {
-  res.send("🚀 CivicConnect backend is live on Render!");
-});
+// ✅ Root route - always go to login page
+app.get("/", (req, res) => res.redirect("/login"));
 
-// Optional: Only redirect to /login locally (not on Render)
-if (process.env.NODE_ENV !== "production") {
-  app.get("/", (req, res) => res.redirect("/login"));
-}
 
 app.get("/home", (req, res) => res.render("home"));
 app.get("/report", (req, res) => res.render("report"));
@@ -108,8 +107,8 @@ app.get("/logout", (req, res) => {
 });
 
 // ---------------------- STATIC FILES ----------------------
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+/*app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));*/
 
 // ---------------------- SERVER ----------------------
 const PORT = process.env.PORT || 3000;
