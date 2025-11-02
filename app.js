@@ -2,13 +2,15 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
+const path = require("path");
 
 // ---------------------- MIDDLEWARE ----------------------
 app.use(express.urlencoded({ extended: true })); // replaces bodyParser
 app.use(express.json()); // for future JSON API routes
 
-// Set EJS
+// Set EJS and views path
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 // ---------------------- DATABASE ----------------------
 mongoose
@@ -24,8 +26,16 @@ const reportRoutes = require("./routes/reportRoutes");
 app.use("/api/reports", reportRoutes);
 
 // ---------------------- PAGE ROUTES ----------------------
-app.get("/", (req, res) => res.redirect("/login")); // Redirect root to login page
-app.get("/home", (req, res) => res.render("home")); // Citizen home page
+app.get("/", (req, res) => {
+  res.send("🚀 CivicConnect backend is live on Render!");
+});
+
+// Optional: Only redirect to /login locally (not on Render)
+if (process.env.NODE_ENV !== "production") {
+  app.get("/", (req, res) => res.redirect("/login"));
+}
+
+app.get("/home", (req, res) => res.render("home"));
 app.get("/report", (req, res) => res.render("report"));
 app.get("/contact", (req, res) => res.render("contact"));
 app.get("/about", (req, res) => res.render("about"));
@@ -49,7 +59,7 @@ app.post("/login", (req, res) => {
 
   if (role === "citizen") {
     console.log("✅ Citizen logged in successfully");
-    return res.redirect("/home"); // Go to citizen home page
+    return res.redirect("/home");
   }
 
   if (role === "admin") {
@@ -76,14 +86,12 @@ app.get("/admin/dashboard", async (req, res) => {
   }
 });
 
-// ✅ FIXED: Properly updates status in DB
 app.post("/admin/update/:id", async (req, res) => {
   try {
     const reportId = req.params.id;
     const { status } = req.body;
 
     console.log(`📝 Updating report ${reportId} to status: ${status}`);
-
     await Report.findByIdAndUpdate(reportId, { status }, { new: true });
 
     res.redirect("/admin/dashboard");
@@ -100,8 +108,8 @@ app.get("/logout", (req, res) => {
 });
 
 // ---------------------- STATIC FILES ----------------------
-app.use(express.static("public"));
-app.use("/uploads", express.static("uploads"));
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ---------------------- SERVER ----------------------
 const PORT = process.env.PORT || 3000;
