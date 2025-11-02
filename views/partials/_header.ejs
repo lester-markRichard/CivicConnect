@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicConnect</title>
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+
+  <!-- ✅ Link to your CSS file -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-wrap">
+      <div class="logo">Civic<span>Connect</span></div>
+      <nav class="nav-links">
+        <a href="/" class="<%= activePage==='home' ? 'active' : '' %>">Home</a>
+        <a href="/report" class="<%= activePage==='report' ? 'active' : '' %>">Report</a>
+        <a href="/reports" class="<%= activePage==='reports' ? 'active' : '' %>">Reports</a>
+        <a href="/about" class="<%= activePage==='about' ? 'active' : '' %>">About</a>
+        <a href="/contact" class="<%= activePage==='contact' ? 'active' : '' %>">Contact</a>
+      </nav>
+
+      <nav class="nav-links">
+
+  <% if (activePage !== 'login') { %>
+    <a href="/logout" class="logout-btn">Logout</a>
+  <% } %>
+</nav>
+
+    </div>
+  </header>

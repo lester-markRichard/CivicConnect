@@ -1,0 +1,27 @@
+<%- include("partials/_header", { activePage: 'login' }) %>
+
+<main class="login-container">
+  <div class="login-box">
+    <h1>Login to Reveal It</h1>
+    <p>Select your role and sign in to continue.</p>
+
+    <form action="/login" method="POST">
+      <label for="role">I am a:</label>
+      <select name="role" id="role" required>
+        <option value="">-- Select Role --</option>
+        <option value="citizen">Citizen</option>
+        <option value="admin">Municipal Authority</option>
+      </select>
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" placeholder="Enter your email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" name="password" placeholder="Enter your password" required>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+  </div>
+</main>
+
+<%- include("partials/_footer") %>

@@ -1,0 +1,40 @@
+<%- include("partials/_header", { activePage: 'dashboard' }) %>
+
+<main class="dashboard-container">
+  <h1>Municipal Dashboard</h1>
+  <p>Manage all reported issues from citizens.</p>
+
+  <table class="report-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% reports.forEach(report => { %>
+        <tr>
+          <td><%= report.title %></td>
+          <td><%= report.description %></td>
+          <td><%= report.location %></td>
+          <td><%= report.status %></td>
+          <td>
+            <form action="/admin/update/<%= report._id %>" method="POST">
+              <select name="status" required>
+                <option value="Pending" <%= report.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                <option value="In Progress" <%= report.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                <option value="Resolved" <%= report.status === 'Resolved' ? 'selected' : '' %>>Resolved</option>
+              </select>
+              <button type="submit" class="btn-small">Update</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</main>
+
+<%- include("partials/_footer") %>
